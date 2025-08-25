@@ -37,7 +37,7 @@ def error(X, y, w, i):
 # ===========================
 # Cost function (Mean Squared Error / 2)
 # ===========================
-def cost_function(X, y, w, x0=None, rho=0.01):
+def cost_function(X, y, w, x0=None, rho=None):
     """
     Compute the cost (mean squared error) over the dataset.
     
@@ -51,15 +51,13 @@ def cost_function(X, y, w, x0=None, rho=0.01):
     """
     if x0 and rho:
         return np.sum([np.exp(-(X[i] - x0) ** 2 / (2 * rho**2)) *  error(X, y, w, i) ** 2 for i in range(len(X))]) / (2 * len(X))
-
-
     return np.sum([error(X, y, w, i) ** 2 for i in range(len(X))]) / (2 * len(X))
 
 # ===========================
 # Gradient Descent Algorithm
 # Supports: BGD, SGD, MBGD
 # ===========================
-def gradient_descent(X, y, epsilon=0.001, max_iter=1000, type="BGD", alpha=1e-4, batch_size=32):
+def gradient_descent(X, y, epsilon=0.001, max_iter=1000, type="BGD", alpha=1e-4, batch_size=32, x0=None, rho=0.01):
     """
     Perform gradient descent to minimize the cost function.
     
@@ -82,7 +80,7 @@ def gradient_descent(X, y, epsilon=0.001, max_iter=1000, type="BGD", alpha=1e-4,
     w = np.zeros((X.shape[1], 1))
 
     # Compute initial cost
-    cost = cost_function(X, y, w)
+    cost = cost_function(X, y, w, x0, rho)
     weights_history = [w.copy()]  # store initial weights
     loss_history = [cost]         # store initial cost
 
@@ -104,7 +102,7 @@ def gradient_descent(X, y, epsilon=0.001, max_iter=1000, type="BGD", alpha=1e-4,
 
             # Store updated weights and cost
             weights_history.append(w.copy())
-            new_cost = cost_function(X, y, w)
+            new_cost = cost_function(X, y, w, x0, rho)
             loss_history.append(new_cost)
 
             # Check convergence
@@ -124,7 +122,7 @@ def gradient_descent(X, y, epsilon=0.001, max_iter=1000, type="BGD", alpha=1e-4,
                 grad = error(X, y, w, i) * X[i][j]
                 w[j] = w[j] - alpha * grad
             weights_history.append(w.copy())
-            cost = cost_function(X, y, w)
+            cost = cost_function(X, y, w, x0, rho)
             loss_history.append(cost)
     else:
         raise ValueError("Invalid gradient descent type")
