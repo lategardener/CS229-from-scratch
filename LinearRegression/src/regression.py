@@ -37,7 +37,7 @@ def error(X, y, w, i):
 # ===========================
 # Cost function (Mean Squared Error / 2)
 # ===========================
-def cost_function(X, y, w):
+def cost_function(X, y, w, x0=None, rho=0.01):
     """
     Compute the cost (mean squared error) over the dataset.
     
@@ -49,6 +49,10 @@ def cost_function(X, y, w):
     Returns:
     - cost value (scalar)
     """
+    if x0 and rho:
+        return np.sum([np.exp(-(X[i] - x0) ** 2 / (2 * rho**2)) *  error(X, y, w, i) ** 2 for i in range(len(X))]) / (2 * len(X))
+
+
     return np.sum([error(X, y, w, i) ** 2 for i in range(len(X))]) / (2 * len(X))
 
 # ===========================
