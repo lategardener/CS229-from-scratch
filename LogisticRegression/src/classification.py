@@ -144,6 +144,10 @@ def gradient_descent(X, y, epsilon=0.001, max_iter=1000, type="BGD", alpha=1e-4,
     loss_history = np.array(loss_history, dtype=np.float64)
 
 
+    return theta, final_loss, weights_history, loss_history, metrics(X, y, theta)
+
+
+def confusion_elements(X, y, theta):
     probas = [h_function(x, theta) for x in X]
     predicted_classes = pd.DataFrame({"Predicted_class" : [(1 if x >= 0.5 else 0) for x in probas]})
 
@@ -156,11 +160,17 @@ def gradient_descent(X, y, epsilon=0.001, max_iter=1000, type="BGD", alpha=1e-4,
     FP = np.sum((predicted_classes == 1) & (y == 0))
     FN = np.sum((predicted_classes == 0) & (y == 1))
 
+    return TP, TN, FP, FN
+
+
+def metrics(X, y, theta):
+
+    TP, TN, FP, FN = confusion_elements(X, y, theta)
+
     accuracy = (TP + TN) / (TP + TN + FP + FN)
     precision = TP / (TP + FP) if (TP + FP) != 0 else 0
     recall = TP / (TP + FN) if (TP + FN) != 0 else 0
     f1_score = 2 * (precision * recall) / (precision + recall) if (precision + recall) != 0 else 0
 
     metrics = {"accuracy": accuracy, "precision": precision, "recall": recall, "f1_score": f1_score}
-
-    return theta, final_loss, weights_history, loss_history, metrics
+    return metrics
