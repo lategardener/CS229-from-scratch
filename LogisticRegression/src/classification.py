@@ -41,6 +41,10 @@ def log_likelihood(X, y, theta):
     ])
 
 
+def negative_log_likelihood(X, y, theta):
+    return -log_likelihood(X, y, theta)
+
+
 # ===========================
 # Error for a single data point
 # ===========================
