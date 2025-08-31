@@ -68,7 +68,7 @@ def error(X, y, theta, i):
 # Gradient Descent Algorithm
 # Supports: BGD, SGD, MBGD
 # ===========================
-def gradient_descent(X, y, epsilon=0.001, max_iter=1000, type="BGD", alpha=1e-4, batch_size=32, loss_function=negative_log_likelihood):
+def gradient_descent_ascent(X, y, epsilon=0.001, max_iter=1000, type="BGD", alpha=1e-4, batch_size=32, loss_function=negative_log_likelihood):
     """
     Perform gradient descent to optimize the weights of a logistic regression model.
 
@@ -114,10 +114,7 @@ def gradient_descent(X, y, epsilon=0.001, max_iter=1000, type="BGD", alpha=1e-4,
                     grad = np.sum([error(X, y, theta, i) * X[i][j] for i in chosen_data]) / batch_size
 
                 # Update weight with gradient step
-                if loss_function is negative_log_likelihood:
-                    theta[j] = theta[j] - alpha * grad
-                elif loss_function is log_likelihood:
-                    theta[j] = theta[j] + alpha * grad
+                theta[j] = theta[j] + alpha * grad
 
             # Store updated weights and cost
             weights_history.append(theta.copy())
@@ -139,10 +136,8 @@ def gradient_descent(X, y, epsilon=0.001, max_iter=1000, type="BGD", alpha=1e-4,
         for i in range(len(X)):
             for j in range(len(theta)):
                 grad = error(X, y, theta, i) * X[i][j]
-                if loss_function is negative_log_likelihood:
-                    theta[j] = theta[j] - alpha * grad
-                elif loss_function is log_likelihood:
-                    theta[j] = theta[j] + alpha * grad
+                # Update weight with gradient step
+                theta[j] = theta[j] + alpha * grad
 
             # Store weights and cost after each update
             weights_history.append(theta.copy())
