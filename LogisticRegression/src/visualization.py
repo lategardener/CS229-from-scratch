@@ -1,7 +1,7 @@
 import numpy as np
 import seaborn as sns
 
-from LogisticRegression.src.classification import confusion_elements
+from LogisticRegression.src.binary_classification import confusion_elements
 
 def confusion_matrix(X, y, theta):
     TP, TN, FP, FN = confusion_elements(X, y, theta)
