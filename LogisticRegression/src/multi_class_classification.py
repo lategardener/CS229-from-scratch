@@ -44,3 +44,10 @@ def proba_class_i(x, theta_list, i):
 
     # Softmax probability
     return numerator / denominator
+
+
+def single_log_likelihood(x, theta_list, class_x):
+    return - np.log(proba_class_i(x, theta_list, class_x))
+
+def log_likelihood(X, y, theta_list):
+    return sum([single_log_likelihood(X[i], theta_list, y[i].item()) for i in range(len(X))])
